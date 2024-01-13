@@ -1,7 +1,16 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, Button, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Button,
+  View,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { useEffect, useState } from "react";
 import Voice from "@react-native-voice/voice";
+import mic from "./assets/mic.png";
+import micc from "./assets/mic-slash.png";
 // import Svg, { Path, Rect } from "react-native-svg";
 
 export default function App() {
@@ -28,6 +37,7 @@ export default function App() {
   };
 
   const onSpeechResults = (result) => {
+    console.log(result);
     setResults(result.value);
   };
 
@@ -37,16 +47,42 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {!started ? (
-        <Button title="Start Speech to Text" onPress={startSpeechToText} />
-      ) : undefined}
-      {started ? (
-        <Button title="Stop Speech to Text" onPress={stopSpeechToText} />
-      ) : undefined}
-      <TouchableOpacity></TouchableOpacity>
       {results.map((result, index) => (
-        <Text key={index}>{result}</Text>
+        <Text style={{ color: "white" }} key={index}>
+          {result}
+        </Text>
       ))}
+      <View style={{ position: "absolute", bottom: 30 }}>
+        <TouchableOpacity
+          onPressIn={() => {
+            setStarted(true);
+            startSpeechToText();
+          }}
+          onPressOut={() => {
+            setStarted(false);
+            stopSpeechToText();
+          }}
+          style={{
+            borderWidth: 2,
+            borderRadius: 1000,
+            padding: 5,
+            backgroundColor: "lightblue",
+            height: 65,
+            width: 65,
+            alignItems: "center",
+            justifyContent: "center",
+            borderColor: "lightblue",
+          }}
+        >
+          <Image
+            source={!started ? mic : micc}
+            resizeMode="cover"
+            height={20}
+            style={{ height: 25, width: 25 }}
+            width={25}
+          />
+        </TouchableOpacity>
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -55,7 +91,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#121212",
     alignItems: "center",
     justifyContent: "center",
   },
