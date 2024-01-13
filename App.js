@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Voice from "@react-native-voice/voice";
 import mic from "./assets/mic.png";
 import micc from "./assets/mic-slash.png";
+import translate from "translate-google";
 // import Svg, { Path, Rect } from "react-native-svg";
 
 export default function App() {
@@ -44,7 +45,20 @@ export default function App() {
   const onSpeechError = (error) => {
     console.log(error);
   };
-
+  // translate("I speak Dutch!", { from: "en", to: "nl" })
+  //   .then((res) => {
+  //     console.log(res.text);
+  //     //=> Ik spreek Nederlands!
+  //     console.log(res.from.text.autoCorrected);
+  //     //=> true
+  //     console.log(res.from.text.value);
+  //     //=> I [speak] Dutch!
+  //     console.log(res.from.text.didYouMean);
+  //     //=> false
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
   return (
     <View style={styles.container}>
       {results.map((result, index) => (
