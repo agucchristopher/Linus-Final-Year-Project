@@ -1,14 +1,102 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
-import * as Speech from "expo-speech";
+import {
+  StyleSheet,
+  Text,
+  Button,
+  View,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { useEffect, useState } from "react";
+import Voice from "@react-native-voice/voice";
+import mic from "./assets/mic.png";
+import micc from "./assets/mic-slash.png";
+import translate from "translate-google";
+// import Svg, { Path, Rect } from "react-native-svg";
+
 export default function App() {
+  let [started, setStarted] = useState(false);
+  let [results, setResults] = useState([]);
+
+  useEffect(() => {
+    Voice.onSpeechError = onSpeechError;
+    Voice.onSpeechResults = onSpeechResults;
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, []);
+
+  const startSpeechToText = async () => {
+    await Voice.start("en-NZ");
+    setStarted(true);
+  };
+
+  const stopSpeechToText = async () => {
+    await Voice.stop();
+    setStarted(false);
+  };
+
+  const onSpeechResults = (result) => {
+    console.log(result);
+    setResults(result.value);
+  };
+
+  const onSpeechError = (error) => {
+    console.log(error);
+  };
+  // translate("I speak Dutch!", { from: "en", to: "nl" })
+  //   .then((res) => {
+  //     console.log(res.text);
+  //     //=> Ik spreek Nederlands!
+  //     console.log(res.from.text.autoCorrected);
+  //     //=> true
+  //     console.log(res.from.text.value);
+  //     //=> I [speak] Dutch!
+  //     console.log(res.from.text.didYouMean);
+  //     //=> false
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Button
-        title="Touch"
-        onPress={() => Speech.speak("Linus i love you - mimi")}
-      />
+      {results.map((result, index) => (
+        <Text style={{ color: "white" }} key={index}>
+          {result}
+        </Text>
+      ))}
+      <View style={{ position: "absolute", bottom: 30 }}>
+        <TouchableOpacity
+          onPressIn={() => {
+            setStarted(true);
+            startSpeechToText();
+          }}
+          onPressOut={() => {
+            setStarted(false);
+            stopSpeechToText();
+          }}
+          style={{
+            borderWidth: 2,
+            borderRadius: 1000,
+            padding: 5,
+            backgroundColor: "lightblue",
+            height: 65,
+            width: 65,
+            alignItems: "center",
+            justifyContent: "center",
+            borderColor: "lightblue",
+          }}
+        >
+          <Image
+            source={!started ? mic : micc}
+            resizeMode="cover"
+            height={20}
+            style={{ height: 25, width: 25 }}
+            width={25}
+          />
+        </TouchableOpacity>
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -17,7 +105,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#121212",
     alignItems: "center",
     justifyContent: "center",
   },
