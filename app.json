@@ -6,19 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "plugins": [
-      [
-        "@react-native-voice/voice",
-        {
-          "microphonePermission": "Allow MR. LINUS to access the microphone",
-          "speechRecognitionPermission": "Allow MR. LINUS to securely recognize user speech"
-        },
-        "expo-av",
-        {
-          "microphonePermission": "Allow MR. LINUS to access the microphone"
-        }
-      ]
-    ],
+    "plugins": [],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
