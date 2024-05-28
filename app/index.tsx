@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import Voice from "@react-native-voice/voice";
-import * as Speech from "expo-speech";
 // import mic from "./assets/images/mic.png";
 // import micc from "../assets/images/mic-slash.png";
 // import translate from "translate-google";
@@ -29,14 +28,12 @@ export default function App() {
   }, []);
 
   const startSpeechToText = async () => {
-    const thingToSay = "hello west how are you today?";
-    Speech.speak(thingToSay, { pitch: 0.7, language: "ig-NG" });
-    // await Voice.start("en-US");
+    await Voice.start("en-US");
     setStarted(true);
   };
 
   const stopSpeechToText = async () => {
-    // await Voice.stop();
+    await Voice.stop();
     setStarted(false);
   };
 
