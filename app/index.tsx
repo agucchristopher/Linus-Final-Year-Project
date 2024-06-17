@@ -28,21 +28,34 @@ export default function App() {
   }, []);
 
   const startSpeechToText = async () => {
-    await Voice.start("en-US");
-    setStarted(true);
+    if (Voice) {
+      try {
+        await Voice?.start("en-US").catch((e) => console.log(e));
+        setStarted(true);
+        console.log("Listening....");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const stopSpeechToText = async () => {
-    await Voice.stop();
-    setStarted(false);
+    if (Voice) {
+      try {
+        await Voice.stop();
+        setStarted(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
-  const onSpeechResults: React.FC<any> = (result) => {
+  const onSpeechResults = (result: any) => {
     console.log(result);
     setResults(result.value);
   };
 
-  const onSpeechError: React.FC<any> = (error) => {
+  const onSpeechError = (error: any) => {
     console.log(error);
   };
   // translate("I speak Dutch!", { from: "en", to: "nl" })
